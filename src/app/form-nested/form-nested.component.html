@@ -1,0 +1,113 @@
+<nz-divider [nzText]="'检查表配置页面'"></nz-divider>
+
+<form [formGroup]="validateForm">
+  <nz-form-item>
+    <nz-form-label nzSpan="3" nz-col>
+      检查表名称
+    </nz-form-label>
+    <nz-form-control nzSpan="7" nz-col>
+      <input nz-input type="text" placeholder="请输入检查表名称" formControlName="ebecssvy_name">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzSpan="3" nz-col>
+      Tab
+    </nz-form-label>
+    <nz-form-label nzSpan="9" nz-col>
+      <button  (click)="addStage()">增加Tab</button>
+    </nz-form-label>
+    <nz-form-control nzSpan="18">
+      <div class="workFlowContent" formArrayName="tabs"
+           *ngFor="let content of workFlowContent.controls;
+              let workflowIndex = index">
+        <nz-row>
+          <nz-form-label nzSpan="3" nz-col>
+            Tab{{workflowIndex + 1}}
+          </nz-form-label>
+          <nz-form-control nzOffset="15" nzSpan="3" nz-col>
+            <button  (click)="removeStage(workflowIndex)">
+              删除Tab
+            </button>
+          </nz-form-control>
+        </nz-row>
+        <nz-row>
+          <nz-form-label nzSpan="3" nz-col>TabName</nz-form-label>
+          <nz-form-control nz-col nzSpan="7" [formGroupName]="workflowIndex.toString()">
+            <input nz-input type="text" formControlName="ebecssvy_name">
+          </nz-form-control>
+        </nz-row>
+        <nz-row>
+
+            <nz-form-label nzSpan="9" nz-col>
+              问题区域
+            </nz-form-label>
+            <nz-form-label nzSpan="3" nz-col>
+              <button  (click)="addStep(workflowIndex)">增加问题</button>
+            </nz-form-label>
+        </nz-row>
+        <nz-row>
+          <nz-form-control nzOffset="3" nzSpan="18" [formGroupName]="workflowIndex.toString()">
+            <div formArrayName="questions"
+                 class="stageContent"
+                 *ngFor="let stage of content.get('questions').controls;let stageIndex = index">
+              <div [formGroupName]="stageIndex.toString()">
+                <nz-row>
+                  <nz-form-label nzSpan="3" nz-col>问题{{stageIndex + 1}}</nz-form-label>
+                  <nz-form-control nzOffset="15" nzSpan="3">
+                    <button  (click)="removeStep(workflowIndex,stageIndex)">删除问题</button>
+                  </nz-form-control>
+                </nz-row>
+                <nz-row>
+                  <nz-form-label nzSpan="3" nz-col>主问题</nz-form-label>
+                  <nz-form-control nzSpan="7" nz-col>
+                    <input nz-input type="text" formControlName="ebecssvy_name" placeholder="请输入主问题">
+                  </nz-form-control>
+
+                  <nz-form-label nzOffset="1" nzSpan="3" nz-col>子问题</nz-form-label>
+                  <nz-form-control nzSpan="7" nz-col>
+                    <input nz-input type="text" formControlName="stepType" placeholder="请输入子问题">
+                  </nz-form-control>
+                </nz-row>
+                <nz-row>
+                  <nz-form-label nzSpan="3" nz-col>选项</nz-form-label>
+                  <nz-form-control nzSpan="9" nz-col formArrayName="answers">
+                    <nz-row *ngFor="let step of stage.get('answers').controls;let stepIndex = index">
+                      <input nz-input type="text"
+                             [formControlName]="stepIndex.toString()"
+                             placeholder="请输入选项">
+                      <nz-form-control nzSpan="2">
+                        <button  (click)="removeStepContent(stage,stepIndex)">
+                          删除选项
+                        </button>
+                      </nz-form-control>
+                    </nz-row>
+                    <nz-row>
+                      <button  (click)="addStepContent(stage)">
+                        添加选项
+                      </button>
+                    </nz-row>
+                  </nz-form-control>
+                </nz-row>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-row>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+<!--<nz-form-item>-->
+<!--  <nz-form-label nzSpan="3" nz-col>-->
+<!--    表单的值-->
+<!--  </nz-form-label>-->
+<!--  <nz-form-control nzSpan="21" nz-col>-->
+<!--    {{validateForm.value | json}}-->
+<!--  </nz-form-control>-->
+<!--</nz-form-item>-->
+
+<button (click)='exportData(validateForm.value)' >保存检查表</button>
+<a class="btn btn-clear" title="Download JSON" [href]="downloadJsonHref" download="{{jsonName}}.json">下载JSON</a>
+<input name="file" type="file" (change)="fileChange($event)" />
+
+
