@@ -232,7 +232,7 @@ export class FormNestedComponent implements OnInit {
         this.exportJson[0].ebecssvy_name = a.ebecssvy_name;
       }
       this.exportJson[0].tabs[i].ebecssvy_name = a.tabs[i].ebecssvy_name;
-      this.exportJson[0].tabs[i].ecolab_type = 'instmain';
+      this.exportJson[0].tabs[i].ecolab_type = 'qsr';
       this.exportJson[0].tabs[i].ecolabcn_no = (i + 1).toString();
       for (let m = 0; m < 4 * (a.tabs[i].questions.length); m++)
       {
